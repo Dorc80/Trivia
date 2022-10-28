@@ -8,48 +8,55 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <div id="cargando-container">
+        Cargando juego de trivia...
+    </div>
+
+    <div id="trivia-container" class="display-none">
+
+        <header class="row justify">
+            <a id="continue" href="#">Continue with new questions</a>
+            <h1>Trivia Night</h1>
+            <h1 id="score">0 points</h1>
+        </header>
     
-    <header class="row justify">
-        <a id="continue" href="#">Continue with new questions</a>
-        <h1>Trivia Night</h1>
-        <h1 id="score">0 points</h1>
-    </header>
+        <main class="row">
+    
+            <article class="question-article">
+                <header class="row justify-center">Video Games</header>
+                <div class="question gray" id="idx0">
+                </div>
+                <div class="question gray" id="idx1">
+                </div>
+                <div class="question gray" id="idx2">
+                </div>
+            </article>
+    
+            <article class="question-article">
+                <header class="row justify-center">Films</header>
+                <div class="question gray" id="idx3">
+                </div>
+                <div class="question gray" id="idx4">
+                </div>
+                <div class="question gray" id="idx5">
+                </div>
+            </article>
+    
+            <article class="question-article">
+                <header class="row justify-center">Animals</header>
+                <div class="question gray" id="idx6">
+                </div>
+                <div class="question gray" id="idx7">
+                </div>
+                <div class="question gray" id="idx8">
+                </div>
+            </article>
+    
+        </main>
 
-    <main class="row">
-
-        <article class="question-article">
-            <header class="row justify-center">Video Games</header>
-            <div class="question gray" id="idx0">
-            </div>
-            <div class="question gray" id="idx1">
-            </div>
-            <div class="question gray" id="idx2">
-            </div>
-        </article>
-
-        <article class="question-article">
-            <header class="row justify-center">Films</header>
-            <div class="question gray" id="idx3">
-            </div>
-            <div class="question gray" id="idx4">
-            </div>
-            <div class="question gray" id="idx5">
-            </div>
-        </article>
-
-        <article class="question-article">
-            <header class="row justify-center">Animals</header>
-            <div class="question gray" id="idx6">
-            </div>
-            <div class="question gray" id="idx7">
-            </div>
-            <div class="question gray" id="idx8">
-            </div>
-        </article>
-
-
-
-    </main>
+    </div>
+    
 
 <script src="js/myscript.js"></script>
 </body>

@@ -4,9 +4,8 @@ let score = 0;
 
 for (var i = 0; i < questionsDiv.length; i++) {
 
+    // Agrega listener al question area
     questionsDiv[i].addEventListener('click', function () {
-
-        console.dir(this);
 
         if (this.classList.contains('gray') && !isBlocked) {
 
@@ -21,14 +20,14 @@ for (var i = 0; i < questionsDiv.length; i++) {
             // comprueba respuesta de radio button
             for (var i = 0; i < radios.length; i++) {
                 radios[i].addEventListener('click', function () {
-                    console.log(this.value);
                     let radioidx = this.value.split('-')[1];
                     let radio_answer = this.value.split('-')[0]
                     let correct_answer = questions['idx' + radioidx];
-                    let questionDiv = document.querySelector('#idx'+radioidx);
+                    let questionDiv = document.querySelector('#idx' + radioidx);
+
                     if (radio_answer === correct_answer) {
 
-                        if(radioidx == 0 || radioidx == 3 || radioidx == 6) {
+                        if (radioidx == 0 || radioidx == 3 || radioidx == 6) {
                             score += 100;
                             questionDiv.innerHTML = getScoreHtml(100);
                         } else if (radioidx == 1 || radioidx == 4 || radioidx == 7) {
@@ -62,12 +61,13 @@ function getQuestionHtml(idx) {
 
     let questionHtml = `<div>
     <span class="column center">${questionapi.question}</span>
-    <div>
-        <div><input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[0]}-${idx}">${questionapi.incorrect_answers[0]}</div>
-        <div><input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[1]}-${idx}">${questionapi.incorrect_answers[1]}</div>
-        <div><input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[2]}-${idx}">${questionapi.incorrect_answers[2]}</div>
-        <div><input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[3]}-${idx}">${questionapi.incorrect_answers[3]}</div>
-    </div>
+    <div>`
+
+    for (var i = 0; i < questionapi.incorrect_answers.length; i++) {
+        questionHtml += `<div><input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[i]}-${idx}">${questionapi.incorrect_answers[i]}</div>`;
+    }
+
+    questionHtml += `</div>
     </div>`;
 
 
@@ -84,20 +84,15 @@ function getErrorQuestionHtml(idx, error_answer) {
 
     let questionHtml = `<div>
     <span class="column center">${questionapi.question}</span>
-    <div>
-        <div ${questionapi.incorrect_answers[0] == correct_answer ? 'class="green"' : questionapi.incorrect_answers[0] == error_answer ? 'class="red"' : ''}>
-            <input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[0]}-${idx}" disabled>${questionapi.incorrect_answers[0]}
-        </div>
-        <div ${questionapi.incorrect_answers[1] == correct_answer ? 'class="green"' : questionapi.incorrect_answers[1] == error_answer ? 'class="red"' : ''}>
-            <input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[1]}-${idx}" disabled>${questionapi.incorrect_answers[1]}
-        </div>
-        <div ${questionapi.incorrect_answers[2] == correct_answer ? 'class="green"' : questionapi.incorrect_answers[2] == error_answer ? 'class="red"' : ''}>
-            <input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[2]}-${idx}" disabled>${questionapi.incorrect_answers[2]}
-        </div>
-        <div ${questionapi.incorrect_answers[3] == correct_answer ? 'class="green"' : questionapi.incorrect_answers[3] == error_answer ? 'class="red"' : ''}>
-            <input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[3]}-${idx}" disabled>${questionapi.incorrect_answers[3]}
-        </div>
-        <div class="color-red"><h3>Respuesta incorrecta</h3><div>
+    <div>`
+
+    for (var i = 0; i < questionapi.incorrect_answers.length; i++) {
+        questionHtml += `<div ${questionapi.incorrect_answers[i] == correct_answer ? 'class="green"' : questionapi.incorrect_answers[i] == error_answer ? 'class="red"' : ''}>
+            <input type="radio" name="entertaiment1" value="${questionapi.incorrect_answers[i]}-${idx}" disabled>${questionapi.incorrect_answers[i]}
+        </div>`
+    }
+
+    questionHtml += `<div class="color-red"><h3>Respuesta incorrecta</h3><div>
     </div>
     </div>`;
 
@@ -136,6 +131,7 @@ async function callOpentdb(category, difficulty) {
         let response = await responseStream.json();
         let res = response.results[0];
         res.incorrect_answers.push(res.correct_answer);
+        res.incorrect_answers.sort((a, b) => 0.5 - Math.random());
         return res;
     } catch (error) {
         console.log(error);
@@ -181,8 +177,35 @@ async function getQuestions() {
     questions.questions.push(question);
     questions['idx' + 8] = question.correct_answer;
 
-    console.log(questions);
+    document.querySelector('#cargando-container').classList.add('display-none');
+    document.querySelector('#trivia-container').classList.remove('display-none');
 
 }
+
+function resetGame() {
+
+    questions = new Questions();
+
+    document.querySelector('#cargando-container').classList.remove('display-none');
+
+    for(var i = 0; i < 9; i++) {
+        let element = document.querySelector('#idx'+i);
+        element.classList.add('gray');
+        if(element.children.length > 0) {
+            element.children[0].remove();
+        }
+    }
+
+    document.querySelector('#trivia-container').classList.add('display-none');
+
+
+
+    getQuestions()
+
+}
+
+document.querySelector('#continue').addEventListener('click', function() {
+    resetGame();
+});
 
 getQuestions();

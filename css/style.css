@@ -59,6 +59,10 @@
     visibility: hidden;
 }
 
+.display-none {
+    display: none;
+}
+
 .gray { 
     background-color: #e6e6e6;
 }
